@@ -56,7 +56,7 @@ firebase.database().ref('AcountData/Orders').on("value", function(snapshot) {
 
 var FirebaseDatabase = firebase.database().ref('items').child(localStorage.getItem("item_name"));
 
-FirebaseDatabase.on("value", function(snapshot) {
+FirebaseDatabase.once("value", function(snapshot) {
     description = snapshot.child(localStorage.getItem("Key_Value")).val().description;
     imageUrl = snapshot.child(localStorage.getItem("Key_Value")).val().imageUrl;
     price = snapshot.child(localStorage.getItem("Key_Value")).val().price;
@@ -75,6 +75,7 @@ FirebaseDatabase.on("value", function(snapshot) {
 
     document.getElementById('text1').innerHTML = "price: " + price;
     document.getElementById('text2').innerHTML = description;
+    document.getElementsByClassName('loading')[0].style.display = 'none';
 
     /**  https://firebase.google.com/docs/auth/web/manage-users */
 
@@ -85,6 +86,7 @@ FirebaseDatabase.on("value", function(snapshot) {
 });
 
 function button_buy() {
+    document.getElementsByClassName('loading')[0].style.display = 'block';
     console.warn("New output");
 
     console.log("Uid 1 " + userName);
@@ -147,4 +149,9 @@ function button_buy() {
         ref: ref,
         status: status1,
     });
+
+    setTimeout(() => {
+        document.getElementsByClassName('loading')[0].style.display = 'none';
+        window.location.href = 'OnSuccess.html';
+    }, 4000);
 }

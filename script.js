@@ -43,6 +43,7 @@ FirebaseDatabase.once('value', (snapshot) => {
             div1[0].appendChild(createElement);
             i++;
         });
+    document.getElementsByClassName('loading')[0].style.display = 'none';
 });
 
 function ButtonClick(key_val) {

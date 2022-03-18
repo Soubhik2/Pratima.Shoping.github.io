@@ -12,14 +12,32 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 
+firebase.auth().onAuthStateChanged((user) => {
+    document.getElementsByClassName('loading')[0].style.display = 'block';
+    if (user) {
+        // User is signed in, see docs for a list of available properties
+        // https://firebase.google.com/docs/reference/js/firebase.User
+        var uid = user.uid;
+        // ...
+        window.location.href = "Profile.html"
+        document.getElementsByTagName('a')[2].innerHTML = 'Profile'
+        console.log(firebase.auth().currentUser.uid);
+    } else {
+        // User is signed out
+        // ...
+        console.log("NO acc");
+        document.getElementsByClassName('loading')[0].style.display = 'none';
+    }
+});
+
 function Creat() {
     window.location.href = "SinIn.html"
 }
 
 function SignUp() {
 
-    var EmailId = document.getElementsByClassName('form-control')[0].value;
-    var PassWord = document.getElementsByClassName('form-control')[1].value;
+    var EmailId = document.getElementsByClassName('form-control')[1].value;
+    var PassWord = document.getElementsByClassName('form-control')[2].value;
 
     /** 
         firebase.auth().createUserWithEmailAndPassword(EmailId, PassWord)
@@ -40,6 +58,7 @@ function SignUp() {
                 console.log(errorCode);
                 // ..
             });*/
+    document.getElementsByClassName('loading')[0].style.display = 'block';
 
     firebase.auth().signInWithEmailAndPassword(EmailId, PassWord)
         .then((userCredential) => {
@@ -47,6 +66,8 @@ function SignUp() {
             var user = userCredential.user;
             // ...
             console.log(auth.currentUser.uid);
+            window.location.href = "Profile.html"
+            localStorage.setItem('sign', '0');
         })
         .catch((error) => {
             var errorCode = error.code;
@@ -54,5 +75,8 @@ function SignUp() {
 
             console.log(errorMessage);
             console.log(errorCode);
+            document.getElementsByClassName('loading')[0].style.display = 'none';
+            document.getElementsByClassName('dis')[0].style.display = 'block';
+            document.getElementsByClassName('text_al')[0].innerHTML = errorMessage;
         });
 }

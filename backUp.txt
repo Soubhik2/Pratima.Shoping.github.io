@@ -35,6 +35,7 @@ Order order = new Order(price,imageUrl,item,status,getIntent().getStringExtra("R
 
                 database.getInstance().getReference().child("Orders").child("Users").child(Uid).child(id).setValue(order);
                 database.getInstance().getReference().child("Orders").child("Owner").child(id1).setValue(orderO);
+				
                 database.getInstance().getReference().child("AcountData").child("Orders").child("count").setValue(id1);
                 database.getInstance().getReference().child("Users").child(Uid).setValue(userModel);
                 database.getInstance().getReference().child("items").child(getIntent().getStringExtra("Ref1")).child(getIntent().getStringExtra("Key_V")).setValue(listModel);

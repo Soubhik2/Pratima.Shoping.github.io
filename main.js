@@ -22,7 +22,8 @@ firebase.auth().onAuthStateChanged((user) => {
         // https://firebase.google.com/docs/reference/js/firebase.User
         var uid = user.uid;
         // ...
-        document.getElementsByTagName('a')[2].innerHTML = 'Profile'
+        // document.getElementsByTagName('a')[2].innerHTML = 'Profile'
+        document.getElementsByClassName("nav-link")[2].innerHTML = 'Profile'
         console.log(firebase.auth().currentUser.uid);
     } else {
         // User is signed out

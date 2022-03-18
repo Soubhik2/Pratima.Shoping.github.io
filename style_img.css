@@ -151,9 +151,9 @@
         display: inline-flex;
         flex-direction: column;
     }
-    button {
+    /* button {
         width: 75%;
-    }
+    } */
     .name-tag {
         margin-top: 110px;
     }
@@ -163,9 +163,9 @@
     .price {
         display: inline-block;
     }
-    button {
+    /* button {
         width: 100%
-    }
+    } */
     .menu-bar ul {
         display: inline-block;
         list-style: none;

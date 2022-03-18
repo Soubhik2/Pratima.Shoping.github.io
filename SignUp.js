@@ -12,31 +12,35 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 
-firebase.auth().onAuthStateChanged((user) => {
-    if (user) {
-        // User is signed in, see docs for a list of available properties
-        // https://firebase.google.com/docs/reference/js/firebase.User
-        var uid = user.uid;
-        // ...
-        window.location.href = "Profile.html"
-        document.getElementsByTagName('a')[2].innerHTML = 'Profile'
-        console.log(firebase.auth().currentUser.uid);
-    } else {
-        // User is signed out
-        // ...
-        console.log("NO acc");
-    }
-});
+// firebase.auth().onAuthStateChanged((user) => {
+//     document.getElementsByClassName('loading')[0].style.display = 'block';
+//     if (user) {
+//         // User is signed in, see docs for a list of available properties
+//         // https://firebase.google.com/docs/reference/js/firebase.User
+//         var uid = user.uid;
+//         // ...
+//         window.location.href = "Profile.html"
+//         document.getElementsByTagName('a')[2].innerHTML = 'Profile'
+//         console.log(firebase.auth().currentUser.uid);
+//     } else {
+//         // User is signed out
+//         // ...
+//         console.log("NO acc");
+//         document.getElementsByClassName('loading')[0].style.display = 'none';
+//     }
+// });
 
 function Creat() {
     window.location.href = "SinIn.html"
 }
 
 function SignUp() {
-    var UserName = document.getElementsByClassName('form-control')[0].value;
-    var EmailId = document.getElementsByClassName('form-control')[1].value;
-    var PassWord = document.getElementsByClassName('form-control')[2].value;
-    var PhoneNumber = document.getElementsByClassName('form-control')[3].value;
+    var UserName = document.getElementsByClassName('form-control')[1].value;
+    var EmailId = document.getElementsByClassName('form-control')[2].value;
+    var PassWord = document.getElementsByClassName('form-control')[3].value;
+    var PhoneNumber = document.getElementsByClassName('form-control')[4].value;
+
+    document.getElementsByClassName('loading')[0].style.display = 'block';
 
     console.log(UserName);
     console.log(EmailId);
@@ -59,8 +63,10 @@ function SignUp() {
                 phoneNumber: PhoneNumber,
                 imageUrl: ImageUrl,
                 ordersCount: "0",
+            }).then(() => {
+                window.location.href = "Profile.html"
+                localStorage.setItem('sign', '1');
             });
-
             // ...
         })
         .catch((error) => {
@@ -69,6 +75,9 @@ function SignUp() {
 
             console.log(errorMessage);
             console.log(errorCode);
+            document.getElementsByClassName('loading')[0].style.display = 'none';
+            document.getElementsByClassName('dis')[0].style.display = 'block';
+            document.getElementsByClassName('text_al')[0].innerHTML = errorMessage;
             // ..
         });
 }
