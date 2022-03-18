@@ -1,0 +1,40 @@
+SignUp 
+
+String id = task.getResult().getUser().getUid();
+String ImageUrl = "https://firebasestorage.googleapis.com/v0/b/online-app-a440d.appspot.com/o/empty-profile.png?alt=media&token=9d884c2e-e9ab-4ac0-9d28-cd7ec5ba917f";
+
+UserModel user = new UserModel(UserName.getText().toString(),id, EmailId.getText().toString(), PassWord.getText().toString(),MobileNumber.getText().toString(),ImageUrl,"0");
+
+database.getReference().child("Users").child(id).setValue(user);
+
+
+String UserName, EmailId, PassWord, UserId, PhoneNumber, ImageUrl, OrdersCount;
+
+------------------------------------------------------------
+
+Order 
+
+Order order = new Order(price,imageUrl,item,status,getIntent().getStringExtra("Ref1"),getIntent().getStringExtra("UName"),getIntent().getStringExtra("PNumber"),getIntent().getStringExtra("EId"),getIntent().getStringExtra("Key_V"));
+
+                int sum = Integer.parseInt(ordersCount) + 1; //<-----------
+                String id = Integer.toString(sum);
+				
+                UserModel userModel = new UserModel(userName,userId,emailId,passWord,phoneNumber,imageUrl1,id);  // X-----
+                OrderO orderO = new OrderO(Uid, getIntent().getStringExtra("UName"),"0",id);
+
+
+
+                int sum1 = Integer.parseInt(Count) + 1; //<-----------
+                String id1 = Integer.toString(sum1);
+
+                int sum2 = Integer.parseInt(item) - 1; //<-----------
+                String id2 = Integer.toString(sum2);
+
+                listModel listModel = new listModel(price,description,imageUrl,id2,status,getIntent().getStringExtra("Ref1"));  // X-----
+
+
+                database.getInstance().getReference().child("Orders").child("Users").child(Uid).child(id).setValue(order);
+                database.getInstance().getReference().child("Orders").child("Owner").child(id1).setValue(orderO);
+                database.getInstance().getReference().child("AcountData").child("Orders").child("count").setValue(id1);
+                database.getInstance().getReference().child("Users").child(Uid).setValue(userModel);
+                database.getInstance().getReference().child("items").child(getIntent().getStringExtra("Ref1")).child(getIntent().getStringExtra("Key_V")).setValue(listModel);
