@@ -62,11 +62,22 @@ firebase.auth().onAuthStateChanged((user) => {
 });
 
 function Logout() {
-    document.getElementsByClassName('loading')[0].style.display = 'block';
-    try {
-        auth.signOut();
-        window.location.href = "old_items.html"
-    } catch (error) {
-        console.log('error signing out: ', error);
-    }
+    // document.getElementsByClassName('loading')[0].style.display = 'block';
+    document.getElementsByClassName('about-img')[1].innerHTML =
+        `<div class="spinner-border text-warning" role="status">
+<span class="visually-hidden">Loading...</span>
+</div>`
+    setTimeout(() => {
+        firebase.auth().signOut().then(() => {
+            document.getElementsByClassName('about-img')[1].innerHTML =
+                `<div class="alert alert-primary" role="alert">Logout successful.</div>`;
+
+            setTimeout(() => {
+                window.location.href = "old_items.html";
+            }, 2000);
+        }).catch((error) => {
+            console.log(error.message);
+        });
+    }, 2000);
+
 }

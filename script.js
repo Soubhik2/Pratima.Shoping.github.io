@@ -15,6 +15,7 @@ var FirebaseDatabase = firebase.database().ref('items').child(localStorage.getIt
 
 var arr = [];
 var i = 0;
+
 FirebaseDatabase.once('value', (snapshot) => {
 
     snapshot.forEach(
@@ -22,7 +23,26 @@ FirebaseDatabase.once('value', (snapshot) => {
             let description = Childsnapshot.val().description;
             let imageUrl = Childsnapshot.val().imageUrl;
             let price = Childsnapshot.val().price;
+            let item = Childsnapshot.val().item;
+            let status = Childsnapshot.val().status;
             let Key = Childsnapshot.key;
+
+            //View Details
+
+            let ButtonView, ButtonTextView;
+
+            if (status == '0') {
+                if (item == '1') {
+                    ButtonView = 'btn-primary';
+                    ButtonTextView = 'View Details';
+                } else {
+                    ButtonView = 'btn-warning';
+                    ButtonTextView = 'Temporary Unavailable';
+                }
+            } else {
+                ButtonView = 'btn-dark';
+                ButtonTextView = 'Sold Out';
+            }
 
             arr[i] = Key;
 
@@ -35,7 +55,7 @@ FirebaseDatabase.once('value', (snapshot) => {
                 <div class="card-body">
                     <h5 class="card-title">Rs ` + price + `</h5>
                     <p class="card-text">` + description + `</p>
-                    <br><a href="#" onclick="ButtonClick(` + Key + `)" class="btn btn-primary">Order Now</a>
+                    <br><a href="#" onclick="ButtonClick(` + Key + `)" class="btn ` + ButtonView + `">` + ButtonTextView + `</a>
                 </div>
             </div>
             `

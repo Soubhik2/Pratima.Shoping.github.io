@@ -40,7 +40,13 @@ function SignUp() {
     var PassWord = document.getElementsByClassName('form-control')[3].value;
     var PhoneNumber = document.getElementsByClassName('form-control')[4].value;
 
-    document.getElementsByClassName('loading')[0].style.display = 'block';
+    // document.getElementsByClassName('loading')[0].style.display = 'block';
+
+    document.getElementsByClassName('button_div')[0].innerHTML = `<div class="loading">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>`;
 
     console.log(UserName);
     console.log(EmailId);
@@ -75,9 +81,11 @@ function SignUp() {
 
             console.log(errorMessage);
             console.log(errorCode);
-            document.getElementsByClassName('loading')[0].style.display = 'none';
+            // document.getElementsByClassName('loading')[0].style.display = 'none';
             document.getElementsByClassName('dis')[0].style.display = 'block';
             document.getElementsByClassName('text_al')[0].innerHTML = errorMessage;
             // ..
+
+            document.getElementsByClassName('button_div')[0].innerHTML = '<button type="button" class="btn btn-primary" onclick="SignUp()">Sign Up</button>';
         });
 }

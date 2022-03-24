@@ -13,7 +13,14 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 
 firebase.auth().onAuthStateChanged((user) => {
-    document.getElementsByClassName('loading')[0].style.display = 'block';
+    // document.getElementsByClassName('loading')[0].style.display = 'block';
+
+    document.getElementsByClassName('button_div')[0].innerHTML = `<div class="loading">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>`
+
     if (user) {
         // User is signed in, see docs for a list of available properties
         // https://firebase.google.com/docs/reference/js/firebase.User
@@ -26,7 +33,9 @@ firebase.auth().onAuthStateChanged((user) => {
         // User is signed out
         // ...
         console.log("NO acc");
-        document.getElementsByClassName('loading')[0].style.display = 'none';
+        // document.getElementsByClassName('loading')[0].style.display = 'none';
+        document.getElementsByClassName('button_div')[0].innerHTML =
+            `<button type="button" class="btn btn-primary" onclick="SignUp()">Sign In</button>`;
     }
 });
 
@@ -58,7 +67,14 @@ function SignUp() {
                 console.log(errorCode);
                 // ..
             });*/
-    document.getElementsByClassName('loading')[0].style.display = 'block';
+    // document.getElementsByClassName('loading')[0].style.display = 'block';
+
+    document.getElementsByClassName('button_div')[0].innerHTML =
+        `<div class="loading">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>`
 
     firebase.auth().signInWithEmailAndPassword(EmailId, PassWord)
         .then((userCredential) => {
@@ -78,5 +94,7 @@ function SignUp() {
             document.getElementsByClassName('loading')[0].style.display = 'none';
             document.getElementsByClassName('dis')[0].style.display = 'block';
             document.getElementsByClassName('text_al')[0].innerHTML = errorMessage;
+            document.getElementsByClassName('button_div')[0].innerHTML =
+                `<button type="button" class="btn btn-primary" onclick="SignUp()">Sign In</button>`;
         });
 }

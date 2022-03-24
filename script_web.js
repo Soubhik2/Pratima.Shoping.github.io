@@ -75,7 +75,43 @@ FirebaseDatabase.once("value", function(snapshot) {
 
     document.getElementById('text1').innerHTML = "price: " + price;
     document.getElementById('text2').innerHTML = description;
-    document.getElementsByClassName('loading')[0].style.display = 'none';
+
+    if (status1 == '0') {
+        if (item == '1') {
+            document.getElementsByClassName('container')[0].innerHTML =
+                `<center>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                Order now
+            </button>
+        </center>`;
+        } else {
+            document.getElementsByClassName('container')[0].innerHTML =
+                `<center>
+            <div class="alert alert-warning   d-flex align-items-center" role="alert">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Warning:">
+                <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+            </svg>
+                <div>
+                    Temporary Unavailable
+                </div>
+            </div>
+        </center>`;
+        }
+    } else {
+        document.getElementsByClassName('container')[0].innerHTML =
+            `<center>
+    <div class="alert alert-danger  d-flex align-items-center" role="alert">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Warning:">
+        <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+    </svg>
+        <div>
+            Sold Out
+        </div>
+    </div>
+</center>`;
+    }
+
+    // document.getElementsByClassName('loading')[0].style.display = 'none';
 
     /**  https://firebase.google.com/docs/auth/web/manage-users */
 
@@ -83,11 +119,19 @@ FirebaseDatabase.once("value", function(snapshot) {
     // console.log(imageUrl);
     // console.log(price);
     // console.log("Uid 1 " + Uid);
+}).then(() => {
+    document.getElementsByClassName('loading')[0].style.display = 'none';
 });
 
 function button_buy() {
-    document.getElementsByClassName('loading')[0].style.display = 'block';
-    console.warn("New output");
+    // document.getElementsByClassName('loading')[0].style.display = 'block';
+    // console.warn("New output");
+
+    document.getElementsByClassName('modal-footer')[0].innerHTML = `<div class="loading">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>`
 
     console.log("Uid 1 " + userName);
     console.log("Uid 1 " + emailId);
@@ -118,40 +162,49 @@ function button_buy() {
         ref: localStorage.getItem("item_name"),
         status: "0",
         userName: userName,
+    }).then(() => {
+        firebase.database().ref("Orders").child("Owner").child(id1).set({
+            key: id,
+            ref: Uid,
+            status: "0",
+            userName: userName,
+        }).then(() => {
+            firebase.database().ref("AcountData").child("Orders").set({
+                count: id1,
+            }).then(() => {
+                firebase.database().ref("Users").child(Uid).set({
+                    emailId: emailId,
+                    imageUrl: imageUrlPorfile,
+                    ordersCount: id,
+                    passWord: passWord,
+                    phoneNumber: phoneNumber,
+                    userId: Uid,
+                    userName: userName,
+                }).then(() => {
+                    firebase.database().ref("items").child(localStorage.getItem("item_name")).child(localStorage.getItem("Key_Value")).set({
+                        description: description,
+                        imageUrl: imageUrl,
+                        item: id2,
+                        price: price,
+                        ref: ref,
+                        status: status1,
+                    }).then(() => {
+                        setTimeout(() => {
+                            document.getElementsByClassName('loading')[0].style.display = 'none';
+                            window.location.href = 'OnSuccess.html';
+                        }, 3000);
+                    });
+                });
+            });
+        });
     });
 
-    firebase.database().ref("Orders").child("Owner").child(id1).set({
-        key: id,
-        ref: Uid,
-        status: "0",
-        userName: userName,
-    });
 
-    firebase.database().ref("AcountData").child("Orders").set({
-        count: id1,
-    });
 
-    firebase.database().ref("Users").child(Uid).set({
-        emailId: emailId,
-        imageUrl: imageUrlPorfile,
-        ordersCount: id,
-        passWord: passWord,
-        phoneNumber: phoneNumber,
-        userId: Uid,
-        userName: userName,
-    });
 
-    firebase.database().ref("items").child(localStorage.getItem("item_name")).child(localStorage.getItem("Key_Value")).set({
-        description: description,
-        imageUrl: imageUrl,
-        item: id2,
-        price: price,
-        ref: ref,
-        status: status1,
-    });
 
-    setTimeout(() => {
-        document.getElementsByClassName('loading')[0].style.display = 'none';
-        window.location.href = 'OnSuccess.html';
-    }, 4000);
+
+
+
+
 }
