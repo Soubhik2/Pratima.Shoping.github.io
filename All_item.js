@@ -37,6 +37,7 @@ FirebaseDatabase.once('value', (snapshot) => {
 
             div1[0].appendChild(createElement);
         });
+    document.getElementsByClassName('loading')[0].style.display = 'none';
 });
 
 /*

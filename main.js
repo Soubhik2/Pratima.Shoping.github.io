@@ -73,3 +73,57 @@ FirebaseDatabase.once('value', (snapshot) => {
         });
 
 });
+
+firebase.database().ref('items/NewsFeet').once('value', (snapshot) => {
+
+    snapshot.forEach(
+        function(Childsnapshot) {
+            let description = Childsnapshot.val().description;
+            let imageUrl = Childsnapshot.val().imageUrl;
+            let price = Childsnapshot.val().price;
+            let item = Childsnapshot.val().item;
+            let status = Childsnapshot.val().status;
+            let Key = Childsnapshot.key;
+
+            //View Details
+
+            let TextView;
+
+            if (status == '0') {
+                if (item == '1') {
+                    TextView = 'Available';
+                } else {
+                    TextView = 'Temporary Unavailable';
+                }
+            } else {
+                TextView = 'Sold Out';
+            }
+
+
+
+            let div1 = document.getElementsByClassName('container');
+            let createElement = document.createElement('p');
+            createElement.innerHTML =
+                `
+                <div class="card mb-3" style="max-width: 540px;">
+                <div class="row g-0">
+                  <div class="col-md-4">
+                    <img src="` + imageUrl + `" class="img-fluid rounded-start" alt="...">
+                  </div>
+                  <div class="col-md-8">
+                    <div class="card-body">
+                        <center>
+                            <h5 class="card-title">` + price + `</h5>
+                            <p class="card-text">` + description + `.</p><br>
+                            <p class="card-text"><small class="text-muted">` + TextView + `</small></p>
+                        </center>  
+                    </div>
+                  </div>
+                </div>
+              </div>
+            `
+
+            div1[0].appendChild(createElement);
+        });
+    // document.getElementsByClassName('loading')[0].style.display = 'none';
+});
